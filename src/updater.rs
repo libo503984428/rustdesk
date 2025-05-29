@@ -11,45 +11,45 @@ use std::{
     time::{Duration, Instant},
 };
 
-enum UpdateMsg {
-    CheckUpdate,
-    Exit,
-}
+//enum UpdateMsg {
+//  CheckUpdate,
+//   Exit,
+//}
 
-lazy_static::lazy_static! {
-    static ref TX_MSG : Mutex<Sender<UpdateMsg>> = Mutex::new(start_auto_update_check());
-}
+//lazy_static::lazy_static! {
+//    static ref TX_MSG : Mutex<Sender<UpdateMsg>> = Mutex::new(start_auto_update_check());
+//}
 
 static CONTROLLING_SESSION_COUNT: AtomicUsize = AtomicUsize::new(0);
 
 const DUR_ONE_DAY: Duration = Duration::from_secs(60 * 60 * 24);
 
-pub fn update_controlling_session_count(count: usize) {
-    CONTROLLING_SESSION_COUNT.store(count, Ordering::SeqCst);
+//pub fn update_controlling_session_count(count: usize) {
+//   CONTROLLING_SESSION_COUNT.store(count, Ordering::SeqCst);
 }
 
-pub fn start_auto_update() {
-    let _sender = TX_MSG.lock().unwrap();
-}
+//pub fn start_auto_update() {
+//    let _sender = TX_MSG.lock().unwrap();
+//}
 
-#[allow(dead_code)]
-pub fn manually_check_update() -> ResultType<()> {
-    let sender = TX_MSG.lock().unwrap();
-    sender.send(UpdateMsg::CheckUpdate)?;
-    Ok(())
-}
+//#[allow(dead_code)]
+//pub fn manually_check_update() -> ResultType<()> {
+//  let sender = TX_MSG.lock().unwrap();
+//  sender.send(UpdateMsg::CheckUpdate)?;
+//  Ok(())
+//}
 
-#[allow(dead_code)]
-pub fn stop_auto_update() {
-    let sender = TX_MSG.lock().unwrap();
-    sender.send(UpdateMsg::Exit).unwrap_or_default();
-}
+//#[allow(dead_code)]
+//pub fn stop_auto_update() {
+ //   let sender = TX_MSG.lock().unwrap();
+ //   sender.send(UpdateMsg::Exit).unwrap_or_default();
+//}
 
-#[inline]
-fn has_no_active_conns() -> bool {
-    let conns = crate::Connection::alive_conns();
-    conns.is_empty() && has_no_controlling_conns()
-}
+//#[inline]
+//fn has_no_active_conns() -> bool {
+//  let conns = crate::Connection::alive_conns();
+//  conns.is_empty() && has_no_controlling_conns()
+//}
 
 #[cfg(any(not(target_os = "windows"), feature = "flutter"))]
 fn has_no_controlling_conns() -> bool {
@@ -116,7 +116,7 @@ fn start_auto_update_check_(rx_msg: Receiver<UpdateMsg>) {
     }
 }
 
-fn check_update(manually: bool) -> ResultType<()> {
+/*fn check_update(manually: bool) -> ResultType<()> {
     #[cfg(target_os = "windows")]
     let is_msi = crate::platform::is_msi_installed()?;
     if !(manually || config::Config::get_bool_option(config::keys::OPTION_ALLOW_AUTO_UPDATE)) {
@@ -194,8 +194,8 @@ fn check_update(manually: bool) -> ResultType<()> {
     }
     Ok(())
 }
-
-#[cfg(target_os = "windows")]
+*/
+/*#[cfg(target_os = "windows")]
 fn update_new_version(is_msi: bool, version: &str, file_path: &PathBuf) {
     log::debug!("New version is downloaded, update begin, is msi: {is_msi}, version: {version}, file: {:?}", file_path.to_str());
     if let Some(p) = file_path.to_str() {
@@ -242,7 +242,7 @@ fn update_new_version(is_msi: bool, version: &str, file_path: &PathBuf) {
         );
     }
 }
-
+*/
 pub fn get_download_file_from_url(url: &str) -> Option<PathBuf> {
     let filename = url.split('/').last()?;
     Some(std::env::temp_dir().join(filename))
